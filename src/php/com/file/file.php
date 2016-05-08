@@ -139,4 +139,36 @@ function copyDir($src, $dst) {
         throw $e;
     }
 }
+
+function getPurePath($path) {
+    try {
+        require_once(__DIR__ . '/../arr/array.php');
+        $tmp   = array();
+        $epath = explode(DIRECTORY_SEPARATOR, $path);
+        for($loop=0;$loop < count($epath);$loop++) {
+            if ( (0 === strcmp($epath[$loop], '..')) &&
+                 (0 < count($tmp)) ) {
+                $tmp = com\arr\delete($tmp, count($tmp)-1);
+                continue;
+            }
+            $tmp[] = $epath[$loop];
+        }
+        if (0 === count($tmp)) {
+            throw new \Exception('invalid path ' . $path);
+        }
+        $ret_val = '';
+        for ($loop=0; $loop < count($tmp) ;$loop++) {
+            if (0 === strcmp('', $tmp[$loop])) {
+                $ret_val .= DIRECTORY_SEPARATOR;
+            } else if ($loop !== count($tmp)-1  ) {
+                $ret_val .= $tmp[$loop] . DIRECTORY_SEPARATOR;
+            } else {
+                $ret_val .= $tmp[$loop];
+            }
+        }
+        return $ret_val;
+    } catch (\Exception $e) {
+        throw $e;
+    }
+}
 /* end of file */

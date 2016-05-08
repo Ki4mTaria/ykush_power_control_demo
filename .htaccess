@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase /ypc_demo/
+RewriteRule (.*)$ {@rep1}/src/php/rot/route.php [L]
